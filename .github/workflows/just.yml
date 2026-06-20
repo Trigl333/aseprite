@@ -1,4 +1,3 @@
-
 name: Build Aseprite 32-bit Linux
 
 on:
@@ -33,7 +32,8 @@ jobs:
             libxcursor-dev:i386 \
             libxi-dev:i386 \
             pkg-config \
-            build-essential
+            build-essential \
+            libc6-dev-i386
 
       - name: Create build directory
         run: mkdir -p build
@@ -44,7 +44,12 @@ jobs:
           cmake .. \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_CXX_FLAGS="-m32" \
-            -DCMAKE_C_FLAGS="-m32"
+            -DCMAKE_C_FLAGS="-m32" \
+            -DCMAKE_SIZEOF_VOID_P=4 \
+            -DCMAKE_SYSTEM_PROCESSOR=i686 \
+            -DCMAKE_FIND_ROOT_PATH=/usr/lib/i386-linux-gnu \
+            -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
+            -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY
 
       - name: Build
         run: |
